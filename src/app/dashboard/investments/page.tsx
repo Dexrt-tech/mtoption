@@ -436,8 +436,7 @@ export default function InvestmentsPage() {
 
   return (
     <DashboardLayout>
-      <div className="flex dark:bg-gradient-to-r dark:from-[#ed571705] dark:to-[#e4481d09] flex-1 flex-col gap-4 p-2 sm:p-4 pt-0 pb-20 md:pb-4 w-full overflow-x-hidden">
-        <div className="bg-transparent border border-[#cbcaca26] dark:border dark:border-[rgba(35,35,35,0.6)] dark:bg-[rgba(0,0,0,0.38)] backdrop-blur-[1.5px] min-h-[calc(100vh-8rem)] p-3 sm:p-6 flex-1 rounded-md md:min-h-min w-full overflow-x-hidden space-y-8 sm:space-y-10">
+      <div className="flex flex-col gap-8 w-full">
 
           {/* ── Page header ── */}
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
@@ -504,7 +503,7 @@ export default function InvestmentsPage() {
                 <div className="space-y-4">
                   {/* Amount */}
                   <div>
-                    <label className="block text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+                    <label className="block text-xs sm:text-sm font-medium text-white mb-1.5">
                       Investment Amount ($)
                     </label>
                     <div className="relative">
@@ -520,7 +519,7 @@ export default function InvestmentsPage() {
                   </div>
                   {/* Plan selector */}
                   <div>
-                    <label className="block text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+                    <label className="block text-xs sm:text-sm font-medium text-white mb-1.5">
                       Select Plan
                     </label>
                     <select
@@ -546,30 +545,30 @@ export default function InvestmentsPage() {
                   {calcReturn !== null && calcPlan ? (
                     <div className="space-y-3">
                       <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">Principal</span>
-                        <span className="font-medium text-slate-900 dark:text-white">${fmt(calcNum)}</span>
+                        <span className="text-slate-300">Principal</span>
+                        <span className="font-medium text-white">${fmt(calcNum)}</span>
                       </div>
                       <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">ROI ({calcPlan.roiPercent}%)</span>
-                        <span className="font-medium text-emerald-500">+${fmt(calcReturn)}</span>
+                        <span className="text-slate-300">ROI ({calcPlan.roiPercent}%)</span>
+                        <span className="font-medium text-emerald-400">+${fmt(calcReturn)}</span>
                       </div>
                       <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">Duration</span>
-                        <span className="font-medium text-slate-900 dark:text-white">{calcPlan.durationDays} days</span>
+                        <span className="text-slate-300">Duration</span>
+                        <span className="font-medium text-white">{calcPlan.durationDays} days</span>
                       </div>
                       <div
                         className="pt-3 mt-1"
                         style={{ borderTop: '1px solid rgba(249,115,22,0.2)' }}
                       >
                         <div className="flex justify-between">
-                          <span className="font-semibold text-sm text-slate-900 dark:text-white">Total Return</span>
+                          <span className="font-semibold text-sm text-white">Total Return</span>
                           <span className="text-lg font-bold text-primary">${fmt(calcNum + calcReturn)}</span>
                         </div>
                       </div>
                     </div>
                   ) : (
-                    <div className="text-center text-muted-foreground text-sm py-4">
-                      <Calculator className="w-8 h-8 mx-auto mb-2 opacity-40" />
+                    <div className="text-center text-slate-300 text-sm py-4">
+                      <Calculator className="w-8 h-8 mx-auto mb-2 opacity-60" />
                       Enter an amount and select a plan to calculate your returns
                     </div>
                   )}
@@ -654,7 +653,6 @@ export default function InvestmentsPage() {
             </div>
           </section>
 
-        </div>
       </div>
 
       {/* ── Invest Dialog ── */}

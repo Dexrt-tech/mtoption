@@ -31,13 +31,13 @@ const navSections = [
     items: [
       { href: '/dashboard/investments', icon: Briefcase, label: 'Trading Plans' },
       { href: '/dashboard/active-plans', icon: PieChart, label: 'Active Plans' },
-      { href: '/dashboard/copy-trading', icon: TrendingUp, label: 'Copy Trading' },
+      // { href: '/dashboard/copy-trading', icon: TrendingUp, label: 'Copy Trading' }, // hidden until activated
     ],
   },
   {
     title: 'Services',
     items: [
-      { href: '/dashboard/stocks', icon: BarChart3, label: 'Stocks' },
+      // { href: '/dashboard/stocks', icon: BarChart3, label: 'Stocks' }, // hidden until activated
       { href: '/dashboard/referrals', icon: Users, label: 'Referrals' },
       { href: '/dashboard/kyc', icon: Shield, label: 'KYC Verification' },
     ],

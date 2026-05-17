@@ -21,19 +21,24 @@ export default function TradingViewSection() {
 
     function createWidget() {
       const el = document.getElementById(CONTAINER_ID);
-      if (!el || el.childElementCount > 0) return;
+      if (!el) return;
+      el.innerHTML = '';
 
       new window.TradingView.widget({
         autosize: true,
         symbol: 'COINBASE:BTCUSD',
-        interval: '1',
+        interval: 'D',
         timezone: 'Etc/UTC',
         theme: 'dark',
         style: '1',
         locale: 'en',
-        hide_side_toolbar: false,
+        toolbar_bg: '#0d1117',
+        hide_side_toolbar: true,
+        hide_top_toolbar: false,
+        withdateranges: false,
         allow_symbol_change: true,
         enable_publishing: false,
+        save_image: false,
         container_id: CONTAINER_ID,
       });
     }
@@ -65,7 +70,7 @@ export default function TradingViewSection() {
 
   return (
     <section
-      id="trading-view"
+      id="chart"
       className="landing-section-bg relative border-t px-4 py-16 md:px-8 md:py-24"
       style={{ borderColor: 'var(--landing-border)' }}
     >
@@ -113,7 +118,7 @@ export default function TradingViewSection() {
           {/* TradingView mount */}
           <div
             id={CONTAINER_ID}
-            className="h-[380px] md:h-[500px] lg:h-[560px]"
+            className="h-[300px] md:h-[340px] lg:h-[380px]"
             style={{ background: '#0d1117' }}
           />
         </div>

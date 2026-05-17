@@ -292,8 +292,7 @@ export default function TransactionsPage() {
 
   return (
     <DashboardLayout>
-      <div className="flex dark:bg-gradient-to-r dark:from-[#ed571705] dark:to-[#e4481d09] flex-1 flex-col gap-4 p-2 sm:p-4 pt-0 pb-20 md:pb-4 w-full overflow-x-hidden">
-        <div className="bg-transparent border border-[#cbcaca26] dark:border dark:border-[rgba(35,35,35,0.6)] dark:bg-[rgba(0,0,0,0.38)] backdrop-blur-[1.5px] min-h-[calc(100vh-8rem)] p-3 sm:p-6 flex-1 rounded-md md:min-h-min w-full overflow-x-hidden">
+      <div className="flex flex-col gap-4 w-full">
 
           {/* ── Page header ── */}
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
@@ -547,7 +546,6 @@ export default function TransactionsPage() {
             )}
           </div>
 
-        </div>
       </div>
     </DashboardLayout>
   );

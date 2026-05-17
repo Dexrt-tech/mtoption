@@ -24,7 +24,7 @@ export default function Footer() {
 
         {/* Center */}
         <div className="flex flex-col items-center gap-4">
-          <p className="text-sm" style={{ color: '#62748e' }}>2025 © Meta Trading Option</p>
+          <p className="text-sm" style={{ color: '#62748e' }}>2022 © Meta Trading Option</p>
           <nav className="flex flex-wrap justify-center gap-4">
             {[
               { href: '/contact', label: 'Contact' },
