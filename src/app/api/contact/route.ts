@@ -9,8 +9,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Name, email, and message are required' }, { status: 400 });
     }
 
-    // Notify admin + send confirmation to user (both fire-and-forget)
-    sendContactNotificationEmail(name, email, subject, message);
+    await sendContactNotificationEmail(name, email, subject, message);
     sendContactConfirmationEmail(email, name, subject);
 
     return NextResponse.json({ message: "Message sent successfully. We'll respond within 24 hours." });

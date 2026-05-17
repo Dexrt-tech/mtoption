@@ -8,21 +8,21 @@ const SITE = process.env.NEXT_PUBLIC_SITE_NAME ?? 'Meta Trading Option';
 
 // ─── core send (fire-and-forget safe) ────────────────────────────────────────
 export async function sendEmail(to: string, subject: string, html: string) {
-  try {
-    await resend.emails.send({
-      from: FROM,
-      to,
-      subject,
-      html,
-      replyTo: SUPPORT_EMAIL,
-      headers: {
-        'List-Unsubscribe': `<mailto:${SUPPORT_EMAIL}?subject=unsubscribe>`,
-        'X-Priority': '3',
-        'Precedence': 'bulk',
-      },
-    });
-  } catch (err: any) {
-    console.error('[email] Failed to send to', to, ':', err.message);
+  const result = await resend.emails.send({
+    from: FROM,
+    to,
+    subject,
+    html,
+    replyTo: SUPPORT_EMAIL,
+    headers: {
+      'List-Unsubscribe': `<mailto:${SUPPORT_EMAIL}?subject=unsubscribe>`,
+      'X-Priority': '3',
+      'Precedence': 'bulk',
+    },
+  });
+  if (result.error) {
+    console.error('[email] Resend error sending to', to, ':', JSON.stringify(result.error));
+    throw new Error(result.error.message);
   }
 }
 
