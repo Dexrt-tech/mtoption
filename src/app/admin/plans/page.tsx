@@ -11,6 +11,7 @@ interface Plan {
   minAmount: number;
   maxAmount: number;
   roiPercent: number;
+  bonusPercent: number;
   durationDays: number;
   description: string;
   features: string[];
@@ -19,7 +20,7 @@ interface Plan {
 
 const DEFAULT_FORM = {
   name: '', minAmount: '', maxAmount: '', roiPercent: '',
-  durationDays: '', description: '', features: '', isActive: true,
+  bonusPercent: '0', durationDays: '', description: '', features: '', isActive: true,
 };
 
 const COLORS = ['#ff6a5e', '#f7931a', '#627eea', '#26a17b', '#f59e0b'];
@@ -45,6 +46,7 @@ export default function AdminPlansPage() {
       minAmount: parseFloat(form.minAmount),
       maxAmount: parseFloat(form.maxAmount),
       roiPercent: parseFloat(form.roiPercent),
+      bonusPercent: parseFloat(form.bonusPercent) || 0,
       durationDays: parseInt(form.durationDays),
       description: form.description,
       features: form.features.split('\n').filter(f => f.trim()),
@@ -78,7 +80,8 @@ export default function AdminPlansPage() {
     setEditingId(plan._id);
     setForm({
       name: plan.name, minAmount: plan.minAmount.toString(), maxAmount: plan.maxAmount.toString(),
-      roiPercent: plan.roiPercent.toString(), durationDays: plan.durationDays.toString(),
+      roiPercent: plan.roiPercent.toString(), bonusPercent: (plan.bonusPercent || 0).toString(),
+      durationDays: plan.durationDays.toString(),
       description: plan.description, features: plan.features?.join('\n') || '', isActive: plan.isActive,
     });
     setShowForm(true);
@@ -109,6 +112,10 @@ export default function AdminPlansPage() {
             <div>
               <label className="mb-2 block text-sm font-medium" style={labelStyle}>ROI % (total return)</label>
               <input className="input-field" type="number" placeholder="e.g. 15" value={form.roiPercent} onChange={e => setForm({...form, roiPercent: e.target.value})} required />
+            </div>
+            <div>
+              <label className="mb-2 block text-sm font-medium" style={labelStyle}>Bonus % (added on top of ROI)</label>
+              <input className="input-field" type="number" placeholder="e.g. 5" min="0" value={form.bonusPercent} onChange={e => setForm({...form, bonusPercent: e.target.value})} />
             </div>
             <div>
               <label className="mb-2 block text-sm font-medium" style={labelStyle}>Min Amount ($)</label>
@@ -162,7 +169,10 @@ export default function AdminPlansPage() {
                 </div>
               </div>
               <p className="mb-1 text-4xl font-black" style={{ color }}>{plan.roiPercent}%</p>
-              <p className="mb-4 text-xs" style={{ color: '#62748e' }}>ROI over {plan.durationDays} days</p>
+              <p className="mb-1 text-xs" style={{ color: '#62748e' }}>ROI over {plan.durationDays} days</p>
+              {plan.bonusPercent > 0 && (
+                <p className="mb-3 text-xs font-semibold" style={{ color: '#22c55e' }}>+{plan.bonusPercent}% Bonus</p>
+              )}
               <div className="space-y-1.5 border-t pt-3 text-sm" style={{ borderColor: '#1d222b' }}>
                 <div className="flex justify-between">
                   <span style={{ color: '#62748e' }}>Min</span>

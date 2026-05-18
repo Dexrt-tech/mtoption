@@ -6,7 +6,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import {
   Home, User, Download, Upload, History, Briefcase,
   TrendingUp, BarChart3, Users, Shield, ChevronLeft,
-  ChevronRight, LogOut, Menu, Bell, PieChart, Copy, MailWarning, X,
+  ChevronRight, LogOut, Menu, Bell, PieChart, Copy, MailWarning, X, HeadphonesIcon,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -40,6 +40,7 @@ const navSections = [
       // { href: '/dashboard/stocks', icon: BarChart3, label: 'Stocks' }, // hidden until activated
       { href: '/dashboard/referrals', icon: Users, label: 'Referrals' },
       { href: '/dashboard/kyc', icon: Shield, label: 'KYC Verification' },
+      { href: '/dashboard/support', icon: HeadphonesIcon, label: 'Support' },
     ],
   },
 ];

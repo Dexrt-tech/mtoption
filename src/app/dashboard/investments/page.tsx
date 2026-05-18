@@ -28,6 +28,7 @@ interface Plan {
   minAmount: number;
   maxAmount: number;
   roiPercent: number;
+  bonusPercent: number;
   durationDays: number;
   description: string;
   features: string[];
@@ -257,7 +258,8 @@ function InvestDialog({
   const [amount, setAmount] = useState('');
   const [loading, setLoading] = useState(false);
   const numAmount = parseFloat(amount) || 0;
-  const expectedReturn = numAmount > 0 ? numAmount * (plan.roiPercent / 100) : 0;
+  const totalRate = plan.roiPercent + (plan.bonusPercent || 0);
+  const expectedReturn = numAmount > 0 ? numAmount * (totalRate / 100) : 0;
   const totalReturn = numAmount + expectedReturn;
   const isValid = numAmount >= plan.minAmount && numAmount <= plan.maxAmount;
 
@@ -353,7 +355,7 @@ function InvestDialog({
                 <span className="text-white font-medium">${fmt(numAmount)}</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Expected Return ({plan.roiPercent}%)</span>
+                <span className="text-muted-foreground">Expected Return ({plan.roiPercent}{plan.bonusPercent > 0 ? ` + ${plan.bonusPercent}% bonus` : ''}%)</span>
                 <span className="text-emerald-400 font-medium">+${fmt(expectedReturn)}</span>
               </div>
               <div
@@ -419,7 +421,8 @@ export default function InvestmentsPage() {
   const [calcPlanId, setCalcPlanId] = useState('');
   const calcPlan = plans.find((p) => p._id === calcPlanId) ?? null;
   const calcNum = parseFloat(calcAmount) || 0;
-  const calcReturn = calcPlan && calcNum > 0 ? calcNum * (calcPlan.roiPercent / 100) : null;
+  const calcTotalRate = calcPlan ? calcPlan.roiPercent + (calcPlan.bonusPercent || 0) : 0;
+  const calcReturn = calcPlan && calcNum > 0 ? calcNum * (calcTotalRate / 100) : null;
 
   useEffect(() => {
     fetch('/api/plans')
@@ -549,7 +552,7 @@ export default function InvestmentsPage() {
                         <span className="font-medium text-white">${fmt(calcNum)}</span>
                       </div>
                       <div className="flex justify-between text-sm">
-                        <span className="text-slate-300">ROI ({calcPlan.roiPercent}%)</span>
+                        <span className="text-slate-300">ROI ({calcPlan.roiPercent}{calcPlan.bonusPercent > 0 ? ` + ${calcPlan.bonusPercent}% bonus` : ''}%)</span>
                         <span className="font-medium text-emerald-400">+${fmt(calcReturn)}</span>
                       </div>
                       <div className="flex justify-between text-sm">

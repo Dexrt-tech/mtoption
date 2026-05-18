@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getAuthUser } from '@/lib/auth';
 import { connectDB } from '@/lib/mongodb';
 import User from '@/models/User';
+import { sendWelcomeEmail } from '@/lib/email';
 
 async function requireAdmin() {
   const auth = await getAuthUser();
@@ -59,10 +60,11 @@ export async function PATCH(req: NextRequest) {
   }
 
   if (action === 'verify-email') {
-    await User.findByIdAndUpdate(userId, {
+    const user = await User.findByIdAndUpdate(userId, {
       $set: { isEmailVerified: true },
       $unset: { emailVerificationToken: '', emailVerificationExpiry: '' },
-    });
+    }, { new: true });
+    if (user) sendWelcomeEmail(user.email, user.firstName);
     return NextResponse.json({ message: 'Email verified' });
   }
 

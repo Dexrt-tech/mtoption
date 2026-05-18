@@ -5,6 +5,7 @@ export interface IPlan extends Document {
   minAmount: number;
   maxAmount: number;
   roiPercent: number;
+  bonusPercent: number;
   durationDays: number;
   description: string;
   features: string[];
@@ -18,6 +19,7 @@ const PlanSchema = new Schema<IPlan>(
     minAmount: { type: Number, required: true },
     maxAmount: { type: Number, required: true },
     roiPercent: { type: Number, required: true },
+    bonusPercent: { type: Number, default: 0 },
     durationDays: { type: Number, required: true },
     description: { type: String, default: '' },
     features: [{ type: String }],
