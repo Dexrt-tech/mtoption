@@ -7,13 +7,13 @@ const SUPPORT_EMAIL = process.env.NEXT_PUBLIC_SUPPORT_EMAIL ?? 'support@metatrad
 const SITE = process.env.NEXT_PUBLIC_SITE_NAME ?? 'Meta Trading Option';
 
 // ─── core send (fire-and-forget safe) ────────────────────────────────────────
-export async function sendEmail(to: string, subject: string, html: string) {
+export async function sendEmail(to: string, subject: string, html: string, replyTo?: string) {
   const result = await resend.emails.send({
     from: FROM,
     to,
     subject,
     html,
-    replyTo: SUPPORT_EMAIL,
+    replyTo: replyTo ?? SUPPORT_EMAIL,
     headers: {
       'List-Unsubscribe': `<mailto:${SUPPORT_EMAIL}?subject=unsubscribe>`,
       'X-Priority': '3',
@@ -308,7 +308,7 @@ export async function sendContactNotificationEmail(
       Reply directly to <a href="mailto:${userEmail}" style="color:#f97316;">${userEmail}</a>
     </p>
   `);
-  await sendEmail(ADMIN_EMAIL, `[Support] ${subject || 'New message'} from ${name}`, html);
+  await sendEmail(ADMIN_EMAIL, `[Support] ${subject || 'New message'} from ${name}`, html, userEmail);
 }
 
 // ─── 10. Email verification ───────────────────────────────────────────────────
