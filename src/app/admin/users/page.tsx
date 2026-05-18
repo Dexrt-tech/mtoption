@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import AdminLayout from '@/components/admin/AdminLayout';
 import {
   Search, UserCheck, UserX, Edit2, X,
-  DollarSign, TrendingUp, TrendingDown, Plus, Minus, RefreshCw,
+  DollarSign, TrendingUp, TrendingDown, Plus, Minus, RefreshCw, MailCheck, MailX,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -19,6 +19,8 @@ interface User {
   totalEarnings: number;
   isActive: boolean;
   isVerified: boolean;
+  isEmailVerified: boolean;
+  hasPendingVerification: boolean;
   role: string;
   createdAt: string;
 }
@@ -207,12 +209,26 @@ export default function AdminUsersPage() {
   const [search, setSearch] = useState('');
   const [editUser, setEditUser] = useState<User | null>(null);
   const [togglingId, setTogglingId] = useState<string | null>(null);
+  const [verifyingId, setVerifyingId] = useState<string | null>(null);
 
   const fetchUsers = () => {
     fetch('/api/admin/users').then(r => r.json()).then(d => { if (d.users) setUsers(d.users); });
   };
 
   useEffect(() => { fetchUsers(); }, []);
+
+  const handleVerifyEmail = async (user: User) => {
+    setVerifyingId(user._id);
+    const res = await fetch('/api/admin/users', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId: user._id, action: 'verify-email' }),
+    });
+    const data = await res.json();
+    toast.success(data.message);
+    setVerifyingId(null);
+    fetchUsers();
+  };
 
   const handleToggle = async (user: User) => {
     setTogglingId(user._id);
@@ -255,7 +271,7 @@ export default function AdminUsersPage() {
           <table className="w-full">
             <thead>
               <tr className="border-b" style={{ borderColor: '#1d222b' }}>
-                {['User', 'Balance', 'Deposited', 'Withdrawn', 'Earnings', 'Status', 'Joined', 'Actions'].map(h => (
+                {['User', 'Balance', 'Deposited', 'Withdrawn', 'Earnings', 'Status', 'Email', 'Joined', 'Actions'].map(h => (
                   <th key={h} className="whitespace-nowrap px-5 py-4 text-left text-xs uppercase tracking-wider" style={{ color: '#62748e' }}>{h}</th>
                 ))}
               </tr>
@@ -289,6 +305,14 @@ export default function AdminUsersPage() {
                     </span>
                   </td>
                   <td className="px-5 py-4">
+                    <span className="rounded-full px-2.5 py-1 text-xs font-bold" style={user.isEmailVerified
+                      ? { background: 'rgba(34,197,94,0.1)', color: '#22c55e' }
+                      : { background: 'rgba(234,179,8,0.1)', color: '#eab308' }
+                    }>
+                      {user.isEmailVerified ? 'Verified' : 'Unverified'}
+                    </span>
+                  </td>
+                  <td className="px-5 py-4">
                     <span className="text-xs" style={{ color: '#62748e' }}>{new Date(user.createdAt).toLocaleDateString()}</span>
                   </td>
                   <td className="px-5 py-4">
@@ -302,6 +326,16 @@ export default function AdminUsersPage() {
                         <Edit2 size={12} />
                         Edit
                       </button>
+                      {user.hasPendingVerification && (
+                        <button
+                          onClick={() => handleVerifyEmail(user)}
+                          disabled={verifyingId === user._id}
+                          className="rounded-lg p-1.5 transition-colors hover:bg-green-400/10 text-green-400"
+                          title="Verify email"
+                        >
+                          {verifyingId === user._id ? <RefreshCw size={15} className="animate-spin" /> : <MailCheck size={15} />}
+                        </button>
+                      )}
                       <button
                         onClick={() => handleToggle(user)}
                         disabled={togglingId === user._id}

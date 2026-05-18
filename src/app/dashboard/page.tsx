@@ -4,6 +4,8 @@ import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
+
+declare global { interface Window { TradingView: any; } }
 import {
   TrendingUp, ArrowDownToLine, ArrowUpFromLine, Eye, EyeOff,
   Gift, Users, Briefcase, Activity, Copy, ArrowUp, ArrowDown,
@@ -99,6 +101,41 @@ export default function DashboardPage() {
   }, []);
 
   const cryptos = DISPLAY_COINS.map(sym => prices.find(p => p.symbol === sym)).filter(Boolean) as CryptoPrice[];
+
+  useEffect(() => {
+    function createDashChart() {
+      const el = document.getElementById('tv-dashboard-chart');
+      if (!el) return;
+      el.innerHTML = '';
+      new window.TradingView.widget({
+        autosize: true,
+        symbol: 'COINBASE:BTCUSD',
+        interval: 'D',
+        timezone: 'Etc/UTC',
+        theme: 'dark',
+        style: '1',
+        locale: 'en',
+        toolbar_bg: '#0e0e0e',
+        hide_side_toolbar: true,
+        withdateranges: false,
+        allow_symbol_change: true,
+        enable_publishing: false,
+        save_image: false,
+        container_id: 'tv-dashboard-chart',
+      });
+    }
+    if (typeof window.TradingView !== 'undefined') { createDashChart(); return; }
+    const existing = document.querySelector('script[src*="tradingview.com/tv.js"]');
+    if (existing) {
+      const id = setInterval(() => { if (typeof window.TradingView !== 'undefined') { clearInterval(id); createDashChart(); } }, 100);
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = 'https://s3.tradingview.com/tv.js';
+    script.async = true;
+    script.onload = createDashChart;
+    document.head.appendChild(script);
+  }, []);
 
   const copyReferral = () => {
     if (!user) return;
@@ -446,6 +483,18 @@ export default function DashboardPage() {
                 </div>
               )}
             </div>
+          </div>
+
+          {/* Chart Overview */}
+          <div
+            className="rounded-md overflow-hidden"
+            style={{ border: '1px solid #27272a', background: '#0e0e0e' }}
+          >
+            <div
+              id="tv-dashboard-chart"
+              className="h-[300px] md:h-[340px]"
+              style={{ background: '#0e0e0e' }}
+            />
           </div>
 
           {/* Recent Transactions */}

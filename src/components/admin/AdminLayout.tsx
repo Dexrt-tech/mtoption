@@ -17,6 +17,7 @@ const navItems = [
   { href: '/admin/kyc', icon: BadgeCheck, label: 'KYC Verifications' },
   { href: '/admin/plans', icon: Settings, label: 'Investment Plans' },
   { href: '/admin/wallets', icon: Wallet, label: 'Wallet Addresses' },
+  { href: '/admin/settings', icon: Settings, label: 'Settings' },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

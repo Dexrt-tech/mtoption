@@ -14,7 +14,11 @@ export async function GET() {
   if (!auth) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
 
   await connectDB();
-  const users = await User.find({}).select('-password').sort({ createdAt: -1 });
+  const raw = await User.find({}).select('-password').sort({ createdAt: -1 });
+  const users = raw.map((u) => ({
+    ...u.toObject(),
+    hasPendingVerification: !u.isEmailVerified && !!u.emailVerificationToken,
+  }));
   return NextResponse.json({ users });
 }
 
@@ -52,6 +56,14 @@ export async function PATCH(req: NextRequest) {
     }
     await User.findByIdAndUpdate(userId, { $set: { balance: amount } });
     return NextResponse.json({ message: 'Balance set successfully' });
+  }
+
+  if (action === 'verify-email') {
+    await User.findByIdAndUpdate(userId, {
+      $set: { isEmailVerified: true },
+      $unset: { emailVerificationToken: '', emailVerificationExpiry: '' },
+    });
+    return NextResponse.json({ message: 'Email verified' });
   }
 
   if (action === 'update-stats') {
