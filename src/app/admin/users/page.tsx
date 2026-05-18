@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import AdminLayout from '@/components/admin/AdminLayout';
 import {
   Search, UserCheck, UserX, Edit2, X,
-  DollarSign, TrendingUp, TrendingDown, Plus, Minus, RefreshCw, MailCheck, MailX,
+  DollarSign, TrendingUp, TrendingDown, Plus, Minus, RefreshCw, MailCheck,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 

@@ -5,13 +5,14 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import {
   LayoutDashboard, Users, ArrowDownCircle, ArrowUpCircle,
-  Settings, LogOut, Menu, X, Shield, Wallet, BadgeCheck,
+  Settings, LogOut, Menu, X, Shield, Wallet, BadgeCheck, History,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 const navItems = [
   { href: '/admin', icon: LayoutDashboard, label: 'Overview' },
   { href: '/admin/users', icon: Users, label: 'Users' },
+  { href: '/admin/history', icon: History, label: 'Transaction History' },
   { href: '/admin/deposits', icon: ArrowDownCircle, label: 'Deposits' },
   { href: '/admin/withdrawals', icon: ArrowUpCircle, label: 'Withdrawals' },
   { href: '/admin/kyc', icon: BadgeCheck, label: 'KYC Verifications' },
